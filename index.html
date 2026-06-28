@@ -3,116 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>श्री राम शलाका प्रश्नावली</title>
+    <title>श्री राम शलाका प्रश्नावली (वास्तविक चित्र)</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9;
+            background-color: #fff3e0;
             margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            color: #3e2723;
+            overflow-x: hidden; /* Prevent horizontal scroll from lotuses */
         }
 
         h1 {
-            color: #d32f2f;
+            color: #d84315;
             text-align: center;
-            margin-bottom: 5px;
-        }
-
-        p.instructions {
-            text-align: center;
-            color: #555;
-            max-width: 600px;
             margin-bottom: 20px;
-            font-size: 1.1em;
+            border-bottom: 2px solid #ffb300;
+            padding-bottom: 10px;
         }
 
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(15, 1fr);
-            gap: 2px;
-            background-color: #333;
-            padding: 4px;
+        .step-container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        .step-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .image-frame {
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 3px solid #ffb300;
+            padding: 5px;
+            background-color: #fafafa;
+            display: inline-block;
+        }
+        .deity-image {
+            max-width: 300px;
+            max-height: 400px;
             border-radius: 4px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            object-fit: cover;
+        }
+
+        .mantra {
+            font-size: 1.3em;
+            color: #d32f2f;
+            font-weight: bold;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        .action-btn {
+            background-color: #ff9800;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1.1em;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s, transform 0.1s;
+            margin-top: 15px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .action-btn:hover {
+            background-color: #f57c00;
+            transform: scale(1.05);
+        }
+
+        /* Question Form Styles */
+        .question-box {
+            width: 90%;
+            padding: 15px;
+            font-size: 1.1em;
+            border: 2px solid #ffb300;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            outline: none;
+        }
+        .question-box:focus {
+            border-color: #e65100;
+        }
+        .locked-question {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #4caf50;
+            color: #2e7d32;
+            font-weight: bold;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        /* Orange Grid Styles */
+        .grid-wrapper {
             max-width: 100%;
             overflow-x: auto;
         }
-
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            gap: 1px;
+            background-color: #b71c1c; 
+            padding: 2px;
+            border-radius: 4px;
+            margin: 20px auto;
+            width: fit-content;
+        }
         .cell {
             width: 30px;
             height: 30px;
             display: flex;
             align-items: center;
             justify-content: center;
+            background-color: #f57c00; 
+            color: black;
             font-weight: bold;
             font-size: 14px;
             cursor: pointer;
             user-select: none;
-            transition: transform 0.1s;
+            transition: transform 0.1s, background 0.2s;
         }
-
         .cell:hover {
             transform: scale(1.1);
+            background-color: #ffb300;
             z-index: 10;
             box-shadow: 0 0 5px rgba(0,0,0,0.5);
         }
 
-        .cell.c0 { background-color: #ff0000; color: white; } /* 1: Red */
-        .cell.c1 { background-color: #ff00ff; color: white; } /* 2: Magenta */
-        .cell.c2 { background-color: #006400; color: white; } /* 3: Dark Green */
-        .cell.c3 { background-color: #0000ff; color: white; } /* 4: Blue */
-        .cell.c4 { background-color: #ffff00; color: black; } /* 5: Yellow */
-        .cell.c5 { background-color: #00ff00; color: black; } /* 6: Lime */
-        .cell.c6 { background-color: #8b0000; color: white; } /* 7: Dark Red */
-        .cell.c7 { background-color: #ffffff; color: black; } /* 8: White */
-        .cell.c8 { background-color: #00ffff; color: black; } /* 9: Cyan */
-
+        /* Result Section */
         #result-section {
-            margin-top: 30px;
+            margin-top: 20px;
             padding: 20px;
             border-radius: 8px;
-            background: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             text-align: center;
-            max-width: 600px;
-            width: 100%;
             display: none;
         }
-
-        #result-chaupai {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #d32f2f;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-
-        #result-emoji {
-            font-size: 4em;
-            margin: 10px 0;
-        }
-
-        #result-meaning {
-            font-size: 1.3em;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 5px;
-            display: inline-block;
-            color: #fff;
-        }
-
-        .bg-success { background-color: #000; color: #00ff00 !important; }
-        .bg-doubt { background-color: #000; color: #ff3333 !important; }
+        #result-chaupai { font-size: 1.4em; font-weight: bold; color: #d32f2f; margin-bottom: 15px; }
+        .result-image-frame { margin: 15px 0; border: none; }
+        .result-image { max-width: 150px; max-height: 150px; }
+        #result-meaning { font-size: 1.3em; font-weight: bold; padding: 10px 20px; border-radius: 5px; display: inline-block; color: white; }
+        
+        .bg-yes { background-color: #000; color: #00ff00 !important; }
+        .bg-no { background-color: #000; color: #ff3333 !important; }
         .bg-neutral { background-color: #000; color: #ffff00 !important; }
 
         @media (max-width: 500px) {
-            .cell {
-                width: 20px;
-                height: 20px;
-                font-size: 10px;
+            .cell { width: 22px; height: 22px; font-size: 11px; }
+        }
+
+        /* 🪷 Floating Lotus Animation Styles 🪷 */
+        .falling-lotus {
+            position: fixed;
+            bottom: -50px;
+            font-size: 2.5rem;
+            z-index: 9999;
+            pointer-events: none;
+            animation: floatUp ease-in forwards;
+        }
+
+        @keyframes floatUp {
+            0% { 
+                transform: translateY(0) translateX(0) rotate(0deg) scale(0.8); 
+                opacity: 1; 
+            }
+            50% { 
+                transform: translateY(-50vh) translateX(30px) rotate(20deg) scale(1.2); 
+                opacity: 0.9; 
+            }
+            100% { 
+                transform: translateY(-110vh) translateX(-30px) rotate(-20deg) scale(1); 
+                opacity: 0; 
             }
         }
     </style>
@@ -120,352 +201,177 @@
 <body>
 
     <h1>श्री राम शलाका प्रश्नावली</h1>
-    <p class="instructions">
-        <strong>विधि:</strong> भगवान श्री राम का स्मरण करें और मन में अपना प्रश्न सोचकर नीचे दिए गए ग्रिड में किसी भी एक बॉक्स पर क्लिक करें।
-    </p>
 
-    <div class="grid-container" id="grid">
+    <div id="locked-q-display" class="locked-question">
+        आपका प्रश्न: <span id="user-q-text"></span> 🔒
+    </div>
+
+    <div class="step-container active" id="step-0">
+        <h2>अपना प्रश्न लिखें</h2>
+        <p>पूर्ण श्रद्धा के साथ अपना प्रश्न पूछें।</p>
+        <input type="text" id="question-input" class="question-box" placeholder="उदा: क्या मेरा यह कार्य सफल होगा?">
+        <br>
+        <button class="action-btn" onclick="lockQuestion()">प्रश्न सुरक्षित करें (Lock)</button>
+    </div>
+
+    <div class="step-container" id="step-1">
+        <h2>श्री गणेश आवाहन</h2>
+        <div class="image-frame"><img src="https://static.vecteezy.com/system/resources/previews/021/432/374/non_2x/lord-ganesha-hinduism-deity-vector.jpg" alt="श्री गणेश" class="deity-image"></div>
+        <div class="mantra">ॐ गं गणपतये नमः</div>
+        <p>विघ्नहर्ता भगवान गणेश का ध्यान करें।</p>
+        <button class="action-btn" onclick="throwLotuses(); nextStep(1)">🪷 कमल का फूल चढ़ाएं</button>
+    </div>
+
+    <div class="step-container" id="step-2">
+        <h2>गुरु वंदना</h2>
+        <div class="image-frame"><img src="https://i.pinimg.com/736x/2a/32/c7/2a32c762b63c96ce9daf04d477da755a.jpg" alt="ब्रह्मा विष्णु महेश" class="deity-image"></div>
+        <div class="mantra">
+            गुरुर्ब्रह्मा गुरुर्विष्णुः गुरुर्देवो महेश्वरः।<br>
+            गुरुः साक्षात् परब्रह्म तस्मै श्री गुरवे नमः॥
+        </div>
+        <p>ब्रह्मा, विष्णु और महेश स्वरूप गुरुदेव को प्रणाम करें।</p>
+        <button class="action-btn" onclick="throwLotuses(); nextStep(2)">🪷 कमल का फूल चढ़ाएं</button>
+    </div>
+
+    <div class="step-container" id="step-3">
+        <h2>देवी-देवता वंदना</h2>
+        <div class="image-frame"><img src="image_4.png" alt="ज्योति स्वरूप" class="deity-image"></div>
+        <div class="mantra">
+            कुल देवी-देवता, पितृ देवी-देवता<br>
+            एवं स्थान देवी-देवता (ज्योति स्वरूप)
+        </div>
+        <p>अपने पूर्वजों और स्थान देवताओं का स्मरण कर आशीर्वाद लें।</p>
+        <button class="action-btn" onclick="throwLotuses(); nextStep(3)">🪷 पुष्प अर्पित करें</button>
+    </div>
+
+    <div class="step-container" id="step-4">
+        <h2>माँ दुर्गा आवाहन</h2>
+        <div class="image-frame"><img src="https://i.pinimg.com/1200x/99/79/25/997925f593f6c73ee451614daf828435.jpg" alt="माँ दुर्गा" class="deity-image"></div>
+        <div class="mantra">माँ दुर्गा (द्वात्रिंशन्नाममाला - 32 नामावली)</div>
+        <p>शक्ति स्वरूपा माता का ध्यान करें।</p>
+        <button class="action-btn" onclick="throwLotuses(); nextStep(4)">🪷 कमल का फूल चढ़ाएं</button>
+    </div>
+
+    <div class="step-container" id="step-5">
+        <h2>श्री राम स्मरण</h2>
+        <div class="image-frame"><img src="https://i.pinimg.com/736x/aa/9f/28/aa9f287def11df132bf4c723756fb06e.jpg" alt="श्री राम" class="deity-image"></div>
+        <div class="mantra">"राम राम" (२१ बार जाप करें)</div>
+        <p>मन ही मन प्रभु श्री राम का २१ बार नाम लें।</p>
+        <button class="action-btn" onclick="throwLotuses(); nextStep(5)">🪷 कमल का फूल चढ़ाएं</button>
+    </div>
+
+    <div class="step-container" id="step-6" style="max-width: 800px;">
+        <h2>उत्तर प्राप्त करें</h2>
+        <p>प्रभु का स्मरण कर नीचे ग्रिड में किसी भी एक अक्षर पर क्लिक करें।</p>
+        
+        <div class="grid-wrapper">
+            <div class="grid-container" id="orange-grid">
+                </div>
         </div>
 
-    <div id="result-section">
-        <div id="result-chaupai"></div>
-        <div id="result-emoji"></div>
-        <div id="result-meaning"></div>
+        <div id="result-section">
+            <div id="result-chaupai"></div>
+            <div class="image-frame result-image-frame"><img src="" alt="परिणाम" class="result-image" id="result-image-display"></div>
+            <div id="result-meaning"></div>
+        </div>
     </div>
 
     <script>
-        // Data for the 9 possible Chaupais in standard Ramashalaka
+        const resultImages = {
+            yes: "image_10.png",     
+            no: "image_12.png",      
+            neutral: "image_14.png"  
+        };
+
         const chaupais = [
-            {
-                text: "सुनु सिय सत्य असीस हमारी। पूजहि मन कामना तुम्हारी॥",
-                meaning: "सफलता अवश्य मिलेगी",
-                emoji: "😃",
-                theme: "bg-success"
-            },
-            {
-                text: "प्रबिसि नगर कीजे सब काजा। हृदय राखि कोसलपुर राजा॥",
-                meaning: "सफलता अवश्य मिलेगी",
-                emoji: "😃",
-                theme: "bg-success"
-            },
-            {
-                text: "उघरहिं अंत न होइ निबाहू। कालनेमि जिमि रावन राहू॥",
-                meaning: "सफलता में संदेह हैं",
-                emoji: "😢",
-                theme: "bg-doubt"
-            },
-            {
-                text: "बिधि बस सुजन कुसंगत परहीं। फनि मनि सम निज गुन अनुसरहीं॥",
-                meaning: "सफलता में संदेह हैं",
-                emoji: "😐",
-                theme: "bg-doubt"
-            },
-            {
-                text: "होइहि सोइ जो राम रचि राखा। को करि तर्क बढ़ावै साखा॥",
-                meaning: "परिणाम को भगवान पर छोड़ दें",
-                emoji: "🙄",
-                theme: "bg-neutral"
-            },
-            {
-                text: "मुद मंगलमय संत समाजू। जो जग जंगम तीरथ राजू॥",
-                meaning: "सफलता अवश्य मिलेगी",
-                emoji: "😃",
-                theme: "bg-success"
-            },
-            {
-                text: "गरल सुधा रिपु करहिं मिताई। गोपद सिंधु अनल सितलाई॥",
-                meaning: "सफलता अवश्य मिलेगी",
-                emoji: "😃",
-                theme: "bg-success"
-            },
-            {
-                text: "बरुन कुबेर सुरेस समीरा। रन सनमुख धरि काहु न धीरा॥",
-                meaning: "सफलता में संदेह हैं",
-                emoji: "😢",
-                theme: "bg-doubt"
-            },
-            {
-                text: "सुफल मनोरथ होहुँ तुम्हारे। राम लखनु सुनि भए सुखारे॥",
-                meaning: "सफलता अवश्य मिलेगी",
-                emoji: "😃",
-                theme: "bg-success"
-            }
+            { text: "सुनु सिय सत्य असीस हमारी। पूजहि मन कामना तुम्हारी॥", meaning: "हाँ - सफलता अवश्य मिलेगी", image: resultImages.yes, theme: "bg-yes" },
+            { text: "प्रबिसि नगर कीजे सब काजा। हृदय राखि कोसलपुर राजा॥", meaning: "हाँ - सफलता अवश्य मिलेगी", image: resultImages.yes, theme: "bg-yes" },
+            { text: "उघरहिं अंत न होइ निबाहू। कालनेमि जिमि रावन राहू॥", meaning: "नहीं - सफलता में संदेह है", image: resultImages.no, theme: "bg-no" },
+            { text: "बिधि बस सुजन कुसंगत परहीं। फनि मनि सम निज गुन अनुसरहीं॥", meaning: "नहीं - सफलता में संदेह है", image: resultImages.no, theme: "bg-no" },
+            { text: "होइहि सोइ जो राम रचि राखा। को करि तर्क बढ़ावै साखा॥", meaning: "परिणाम को भगवान पर छोड़ दें", image: resultImages.neutral, theme: "bg-neutral" },
+            { text: "मुद मंगलमय संत समाजू। जो जग जंगम तीरथ राजू॥", meaning: "हाँ - सफलता अवश्य मिलेगी", image: resultImages.yes, theme: "bg-yes" },
+            { text: "गरल सुधा रिपु करहिं मिताई। गोपद सिंधु अनल सितलाई॥", meaning: "हाँ - सफलता अवश्य मिलेगी", image: resultImages.yes, theme: "bg-yes" },
+            { text: "बरुन कुबेर सुरेस समीरा। रन सनमुख धरि काहु न धीरा॥", meaning: "नहीं - सफलता में संदेह है", image: resultImages.no, theme: "bg-no" },
+            { text: "सुफल मनोरथ होहुँ तुम्हारे। राम लखनु सुनि भए सुखारे॥", meaning: "हाँ - सफलता अवश्य मिलेगी", image: resultImages.yes, theme: "bg-yes" }
         ];
 
-        const gridContainer = document.getElementById('grid');
-        const resultSection = document.getElementById('result-section');
-        const resultChaupai = document.getElementById('result-chaupai');
-        const resultEmoji = document.getElementById('result-emoji');
-        const resultMeaning = document.getElementById('result-meaning');
+        const letters = "सुप्रउबिहोमुगबसुनुबिघधिइदररुफसिसिरहिंबसहिमंलनलयनअंसुजसोगसुकुमसगतनइलधाबेनोत्यरकुजोम".split('');
 
-        // Generate 15x15 grid (225 cells)
-        for (let i = 0; i < 225; i++) {
-            const cell = document.createElement('div');
+        function throwLotuses() {
+            const numberOfLotuses = 15; 
             
-            // Calculate the pattern (1 to 9 repeating) based on standard Ramashalaka logic
-            const patternIndex = i % 9; 
-            
-            cell.className = `cell c${patternIndex}`;
-            cell.innerText = patternIndex + 1; // Showing numbers 1-9 as per your reference image
+            for (let i = 0; i < numberOfLotuses; i++) {
+                let lotus = document.createElement('div');
+                lotus.innerHTML = '🪷';
+                lotus.className = 'falling-lotus';
+                
+                lotus.style.left = Math.random() * 100 + 'vw';
+                lotus.style.animationDuration = (Math.random() * 2 + 2.5) + 's'; 
+                lotus.style.transform = `scale(${Math.random() * 0.5 + 0.8})`;
 
-            // Handle Click
-            cell.addEventListener('click', () => {
-                showResult(patternIndex);
-            });
+                document.body.appendChild(lotus);
+                
+                setTimeout(() => {
+                    lotus.remove();
+                }, 5000);
+            }
+        }
 
-            gridContainer.appendChild(cell);
+        function lockQuestion() {
+            const q = document.getElementById('question-input').value.trim();
+            if(q === "") {
+                alert("कृपया पहले अपना प्रश्न लिखें।");
+                return;
+            }
+            document.getElementById('user-q-text').innerText = q;
+            document.getElementById('locked-q-display').style.display = 'block';
+            nextStep(0);
+        }
+
+        function nextStep(currentStepIndex) {
+            setTimeout(() => {
+                document.getElementById(`step-${currentStepIndex}`).classList.remove('active');
+                document.getElementById(`step-${currentStepIndex + 1}`).classList.add('active');
+                
+                if(currentStepIndex + 1 === 6) {
+                    renderGrid();
+                }
+            }, 800); 
+        }
+
+        function renderGrid() {
+            const gridContainer = document.getElementById('orange-grid');
+            gridContainer.innerHTML = ''; 
+
+            for (let i = 0; i < 225; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                
+                cell.innerText = letters[i % letters.length]; 
+                
+                const answerIndex = i % 9;
+
+                cell.addEventListener('click', () => {
+                    showResult(answerIndex);
+                });
+
+                gridContainer.appendChild(cell);
+            }
         }
 
         function showResult(index) {
             const result = chaupais[index];
             
-            // Populate data
-            resultChaupai.innerText = result.text;
-            resultEmoji.innerText = result.emoji;
-            resultMeaning.innerText = result.meaning;
+            const resultSection = document.getElementById('result-section');
+            document.getElementById('result-chaupai').innerText = result.text;
             
-            // Apply correct styling classes
-            resultMeaning.className = result.theme;
+            document.getElementById('result-image-display').src = result.image;
             
-            // Show the section with a smooth scroll
+            const meaningEl = document.getElementById('result-meaning');
+            meaningEl.innerText = result.meaning;
+            meaningEl.className = result.theme; 
+            
             resultSection.style.display = 'block';
-            resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-    </script>
-
-</body>
-</html><!DOCTYPE html>
-<html lang="hi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>श्री राम शलाका प्रश्नावली</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f9;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        h1 {
-            color: #d32f2f;
-            text-align: center;
-            margin-bottom: 5px;
-        }
-
-        p.instructions {
-            text-align: center;
-            color: #555;
-            max-width: 600px;
-            margin-bottom: 20px;
-            font-size: 1.1em;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(15, 1fr);
-            gap: 2px;
-            background-color: #333;
-            padding: 4px;
-            border-radius: 4px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-            max-width: 100%;
-            overflow-x: auto;
-        }
-
-        .cell {
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-            cursor: pointer;
-            user-select: none;
-            transition: transform 0.1s;
-        }
-
-        .cell:hover {
-            transform: scale(1.1);
-            z-index: 10;
-            box-shadow: 0 0 5px rgba(0,0,0,0.5);
-        }
-
-        .cell.c0 { background-color: #ff0000; color: white; } /* 1: Red */
-        .cell.c1 { background-color: #ff00ff; color: white; } /* 2: Magenta */
-        .cell.c2 { background-color: #006400; color: white; } /* 3: Dark Green */
-        .cell.c3 { background-color: #0000ff; color: white; } /* 4: Blue */
-        .cell.c4 { background-color: #ffff00; color: black; } /* 5: Yellow */
-        .cell.c5 { background-color: #00ff00; color: black; } /* 6: Lime */
-        .cell.c6 { background-color: #8b0000; color: white; } /* 7: Dark Red */
-        .cell.c7 { background-color: #ffffff; color: black; } /* 8: White */
-        .cell.c8 { background-color: #00ffff; color: black; } /* 9: Cyan */
-
-        #result-section {
-            margin-top: 30px;
-            padding: 20px;
-            border-radius: 8px;
-            background: white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 600px;
-            width: 100%;
-            display: none;
-        }
-
-        #result-chaupai {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #d32f2f;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-
-        #result-emoji {
-            font-size: 4em;
-            margin: 10px 0;
-        }
-
-        #result-meaning {
-            font-size: 1.3em;
-            font-weight: bold;
-            padding: 10px 20px;
-            border-radius: 5px;
-            display: inline-block;
-            color: #fff;
-        }
-
-        .bg-success { background-color: #000; color: #00ff00 !important; }
-        .bg-doubt { background-color: #000; color: #ff3333 !important; }
-        .bg-neutral { background-color: #000; color: #ffff00 !important; }
-
-        @media (max-width: 500px) {
-            .cell {
-                width: 20px;
-                height: 20px;
-                font-size: 10px;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <h1>श्री राम शलाका प्रश्नावली</h1>
-    <p class="instructions">
-        <strong>विधि:</strong> भगवान श्री राम का स्मरण करें और मन में अपना प्रश्न सोचकर नीचे दिए गए ग्रिड में किसी भी एक बॉक्स पर क्लिक करें।
-    </p>
-
-    <div class="grid-container" id="grid">
-        </div>
-
-    <div id="result-section">
-        <div id="result-chaupai"></div>
-        <div id="result-emoji"></div>
-        <div id="result-meaning"></div>
-    </div>
-
-    <script>
-        // Data for the 9 possible Chaupais in standard Ramashalaka
-        const chaupais = [
-            {
-                text: "सुनु सिय सत्य असीस हमारी। पूजहि मन कामना तुम्हारी॥",
-                meaning: "सफलता अवश्य मिलेगी",
-                emoji: "😃",
-                theme: "bg-success"
-            },
-            {
-                text: "प्रबिसि नगर कीजे सब काजा। हृदय राखि कोसलपुर राजा॥",
-                meaning: "सफलता अवश्य मिलेगी",
-                emoji: "😃",
-                theme: "bg-success"
-            },
-            {
-                text: "उघरहिं अंत न होइ निबाहू। कालनेमि जिमि रावन राहू॥",
-                meaning: "सफलता में संदेह हैं",
-                emoji: "😢",
-                theme: "bg-doubt"
-            },
-            {
-                text: "बिधि बस सुजन कुसंगत परहीं। फनि मनि सम निज गुन अनुसरहीं॥",
-                meaning: "सफलता में संदेह हैं",
-                emoji: "😐",
-                theme: "bg-doubt"
-            },
-            {
-                text: "होइहि सोइ जो राम रचि राखा। को करि तर्क बढ़ावै साखा॥",
-                meaning: "परिणाम को भगवान पर छोड़ दें",
-                emoji: "🙄",
-                theme: "bg-neutral"
-            },
-            {
-                text: "मुद मंगलमय संत समाजू। जो जग जंगम तीरथ राजू॥",
-                meaning: "सफलता अवश्य मिलेगी",
-                emoji: "😃",
-                theme: "bg-success"
-            },
-            {
-                text: "गरल सुधा रिपु करहिं मिताई। गोपद सिंधु अनल सितलाई॥",
-                meaning: "सफलता अवश्य मिलेगी",
-                emoji: "😃",
-                theme: "bg-success"
-            },
-            {
-                text: "बरुन कुबेर सुरेस समीरा। रन सनमुख धरि काहु न धीरा॥",
-                meaning: "सफलता में संदेह हैं",
-                emoji: "😢",
-                theme: "bg-doubt"
-            },
-            {
-                text: "सुफल मनोरथ होहुँ तुम्हारे। राम लखनु सुनि भए सुखारे॥",
-                meaning: "सफलता अवश्य मिलेगी",
-                emoji: "😃",
-                theme: "bg-success"
-            }
-        ];
-
-        const gridContainer = document.getElementById('grid');
-        const resultSection = document.getElementById('result-section');
-        const resultChaupai = document.getElementById('result-chaupai');
-        const resultEmoji = document.getElementById('result-emoji');
-        const resultMeaning = document.getElementById('result-meaning');
-
-        // Generate 15x15 grid (225 cells)
-        for (let i = 0; i < 225; i++) {
-            const cell = document.createElement('div');
-            
-            // Calculate the pattern (1 to 9 repeating) based on standard Ramashalaka logic
-            const patternIndex = i % 9; 
-            
-            cell.className = `cell c${patternIndex}`;
-            cell.innerText = patternIndex + 1; // Showing numbers 1-9 as per your reference image
-
-            // Handle Click
-            cell.addEventListener('click', () => {
-                showResult(patternIndex);
-            });
-
-            gridContainer.appendChild(cell);
-        }
-
-        function showResult(index) {
-            const result = chaupais[index];
-            
-            // Populate data
-            resultChaupai.innerText = result.text;
-            resultEmoji.innerText = result.emoji;
-            resultMeaning.innerText = result.meaning;
-            
-            // Apply correct styling classes
-            resultMeaning.className = result.theme;
-            
-            // Show the section with a smooth scroll
-            resultSection.style.display = 'block';
-            resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
     </script>
 
